@@ -1,0 +1,6 @@
+Class NotJavaTests {
+
+    int var1 = 5;
+    String var2 = "abc";
+    
+}

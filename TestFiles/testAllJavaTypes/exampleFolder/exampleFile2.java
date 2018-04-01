@@ -1,0 +1,5 @@
+package anotherPack;
+
+class AnotherClass {
+  
+}
