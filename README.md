@@ -1,8 +1,8 @@
-# SENG300-Iteration2
+# SENG300-Iteration3
 
 I. Running the program
 -------------------------
-Note:  # SENG300-Iteration2 has been tested to run on MacOS and Windows on Eclipse 
+Note:  # SENG300-Iteration3 has been tested to run on MacOS and Windows on Eclipse 
 
 Steps.
 1. Import the project into Eclipse
