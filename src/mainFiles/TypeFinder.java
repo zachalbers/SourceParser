@@ -17,7 +17,7 @@ import java.util.zip.ZipFile;
 
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.*;
-
+// /Users/zachalbers/Downloads/Hyperion-Android-develop/hyperion-attr/src/main/java/com/willowtreeapps/hyperion/attr
 
 public class TypeFinder {
 	
@@ -98,6 +98,7 @@ public class TypeFinder {
 		  options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_5);
 		  options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.VERSION_1_5);
 		  options.put(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_1_5);
+		  
 
 		  ASTParser parser = ASTParser.newParser(AST.JLS3);
 		  parser.setCompilerOptions(options);
@@ -111,274 +112,11 @@ public class TypeFinder {
 			 
 		  final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 		  
-		  if (findAllTypes) visitAllTypes(cu);
-		  else visitOneType(cu);
+		  visitAllTypes(cu);
 	 
 		  
 		}
-	  
-	  public void visitOneType(CompilationUnit cu) {
-		  cu.accept(new ASTVisitor() {
-				 
-			  
-				public boolean visit(TypeDeclaration node) {
-					String name = node.getName().getFullyQualifiedName();
-					ITypeBinding nodeBinding = node.resolveBinding();
-					
-					if (containsPackage) {
-							if (nodeBinding.getTypeDeclaration() != null) {
-								name = nodeBinding.getTypeDeclaration().getQualifiedName();
-								if (name.equals("")) name = node.getName().getFullyQualifiedName();
-							} else if (nodeBinding.getPackage() != null) {
-								name = nodeBinding.getPackage().getName() + "." + name;
-							}
-						
-					}
-						
-					if (javaType.equals(name)) declerationCount++;
-					if (DEBUG) System.out.println("Declaration: " +name);
-			
-
-					if (node.getSuperclassType() != null) {
-						if (containsPackage) {
-							ITypeBinding superNodeBinding = node.getSuperclassType().resolveBinding();
-							if (superNodeBinding.getPackage() != null) {
-								String superClassName = superNodeBinding.getPackage().getName() + "." + node.getSuperclassType();
-								if (javaType.equals(superClassName)) referenceCount++;
-							}
-						} else {
-							if (javaType.equals(node.getSuperclassType().toString())) referenceCount++;
-						}
-						if (DEBUG) System.out.println("This class extends " + node.getSuperclassType());
-					}
-	
-					if (nodeBinding.getInterfaces() != null) {
-						ITypeBinding[] interfaces = nodeBinding.getInterfaces();
-						if (containsPackage) {
-							for (ITypeBinding i : interfaces) {
-								if (javaType.equals(i.getQualifiedName())) referenceCount++;
-								if (DEBUG) System.out.println("implements Reference: " + i.getQualifiedName());
-							}
-						} else {
-							for (ITypeBinding i : interfaces) {
-								if (javaType.equals(i.getName())) referenceCount++;
-								if (DEBUG) System.out.println("implements Reference: " + i.getName());
-							}
-						}
-					}
-
-					return super.visit(node); 
-				}
-				
-		
-				public boolean visit(VariableDeclarationFragment node) {
-					String name;
-
-					if (containsPackage) {
-						name = node.resolveBinding().getType().getQualifiedName();
-					} else {
-						name = node.resolveBinding().getType().getName();
-
-						
-					}
-			
-					if (javaType.equals(name)) referenceCount++;
-					if (DEBUG) System.out.println("Variable Reference: " + name);
-	
-					return super.visit(node);
-				}
-				
-				public boolean visit(ParameterizedType node) {
-					List<Type> args = node.typeArguments();
-					String name;
-					for (Type t : args) {
-						ITypeBinding itb = (ITypeBinding) t.resolveBinding();
-						if (containsPackage) {
-							name = itb.getQualifiedName(); 	
-						} else {
-							name = itb.getName();
-						}
-						if (javaType.equals(name)) referenceCount++;
-						
-						
-					}
-					return super.visit(node);
-				}
-				
-				public boolean visit(ImportDeclaration node) {
-					String name = node.getName().toString();
-					String[] importParts = name.split("\\.");
-					String[] typeParts = javaType.split("\\.");
-					
-						boolean match = true;
-						for (int i = 0; i < typeParts.length; i ++) {
-							if ((typeParts.length - i > 0 && importParts.length - i > 0)
-									&& !(typeParts[typeParts.length - (1 + i)].equals(importParts[importParts.length - (1 + i)]))) 
-									{ match = false;}
-						}
-						if (match) referenceCount++;
-
-					return super.visit(node);
-				}
-				
-					
-				public boolean visit(MethodDeclaration node) {
-					
-
-					String name;
-					IMethodBinding imb = node.resolveBinding();
-
-					
-					if (node.isConstructor()) {
-						if (containsPackage) {
-							name = imb.getDeclaringClass().getQualifiedName();
-							if (equalsType(name)) referenceCount++;
-							if (DEBUG) System.out.println("Constructor Reference: " + name);
-						} else {
-							if (equalsType(node.getName().getFullyQualifiedName())) referenceCount++;
-							if (DEBUG) System.out.println("Constructor Reference: " + node.getName().getFullyQualifiedName());
-						}
-					}
-					
-				
-					
-
-					if (containsPackage) {
-						name = imb.getReturnType().getQualifiedName();
-						if (equalsType(name)) referenceCount ++;
-						if (DEBUG) System.out.println("Method Return Type Reference: " + name);
-					}
-					else {
-
-						name = imb.getReturnType().getName();
-						if (equalsType(name)) referenceCount ++;
-						if (DEBUG) System.out.println("Method Return Type Reference: " + name);
-
-					}
-				
-					for (Object o : node.parameters()) {
-						SingleVariableDeclaration svd = (SingleVariableDeclaration) o;
-						if (containsPackage) {
-							IVariableBinding nodeBinding = svd.resolveBinding();
-							name = nodeBinding.getType().getQualifiedName();
-							if (equalsType(name)) referenceCount++;
-							if (DEBUG) System.out.println("Parameter Variable Reference: " + name);					
-						} else {
-							name = svd.getType().toString();
-							if (equalsType(name)) referenceCount++;
-							if (DEBUG) System.out.println("Parameter Variable Reference: " + name);						
-						}
-					}
-					
-					List exceptions = node.thrownExceptions();
-					
-					for (Object e : exceptions) {
-						String exceptionName;
-						SimpleName svd = (SimpleName) e;
-
-						if (containsPackage) {
-							exceptionName = svd.resolveTypeBinding().getQualifiedName();	
-						} else {
-							exceptionName = svd.resolveTypeBinding().getName();		
-						}
-						if (equalsType(exceptionName)) referenceCount ++;			
-						if (DEBUG) System.out.println("Exeption Reference Reference: " + name);
-					}
-					
-
-					return super.visit(node);
-				
-				
-				}
-				
-						
-				public boolean visit(ClassInstanceCreation node) {
-					String name;
-				
-					if (containsPackage) {
-						name = node.resolveTypeBinding().getQualifiedName();			
-					} else {
-						name = node.getType().toString();
-					}
-
-					if (equalsType(name)) referenceCount++;
-					if (DEBUG) System.out.println("Instance Variable Reference: " + name);
-					
-					return true; // do not continue 
-			}
-
-				
-				public boolean visit(AnnotationTypeDeclaration node) {
-					String name;
-					
-					if (containsPackage) {
-						name = node.resolveBinding().getQualifiedName();		
-					} else {
-						name = node.getName().getFullyQualifiedName();
-					}
-					
-					if (equalsType(name)) declerationCount++;	
-					if (DEBUG) System.out.println("Declaration: " + name);
-					
-					return false; // do not continue 
-				}
-				
-				
-				public boolean visit(EnumDeclaration node) {
-					String name;
-					if (containsPackage) {
-						name = node.resolveBinding().getQualifiedName();		
-					} else {
-						name = node.getName().getFullyQualifiedName();
-					}
-					
-					if (equalsType(name)) declerationCount++;
-					if (DEBUG) System.out.println("Declaration: " + name);
-
-					
-					ITypeBinding nodeBinding = node.resolveBinding();
-					if (nodeBinding.getInterfaces() != null) {
-						ITypeBinding[] interfaces = nodeBinding.getInterfaces();
-						if (containsPackage) {
-							for (ITypeBinding i : interfaces) {
-								if (equalsType(i.getQualifiedName())) referenceCount++;
-								if (DEBUG) System.out.println("implements Reference: " + i.getQualifiedName());
-							}
-						} else {
-							for (ITypeBinding i : interfaces) {
-								if (equalsType(i.getName())) referenceCount++;
-								if (DEBUG) System.out.println("implements Reference: " + i.getName());
-							}
-						}
-					}
-
-					return false; // do not continue 
-				}
-				
-				
-				public boolean visit(CatchClause node) {
-					String name;
-					ITypeBinding nodeBinding = node.getException().getType().resolveBinding();
-					
-					if (nodeBinding != null) {
-						if (containsPackage) {
-							
-							name = nodeBinding.getQualifiedName();
-							
-							if (equalsType(name)) referenceCount++;
-						} else {
-							name = nodeBinding.getName();
-							if (equalsType(name)) referenceCount++;
-						}
-						if (DEBUG) System.out.println("Reference: "+ name);
-					}
-					return false;
-				}
-				
-				
-
-			});
-	  }
+	 
 	  
 	  
 	  public void visitAllTypes(CompilationUnit cu) {
@@ -395,6 +133,7 @@ public class TypeFinder {
 					if (nodeBinding.getTypeDeclaration() != null) {
 						name = nodeBinding.getTypeDeclaration().getQualifiedName();
 						if (name.equals("")) name = node.getName().getFullyQualifiedName();
+
 					} else if (nodeBinding.getPackage() != null) {
 						name = nodeBinding.getPackage().getName() + "." + name;
 					}
