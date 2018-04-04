@@ -2,3 +2,4 @@
 bin/mainFiles/TypeFinder.class
 *.class
 *.class
+.classpath
