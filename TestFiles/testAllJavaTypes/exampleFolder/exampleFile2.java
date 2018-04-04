@@ -1,5 +1,0 @@
-package anotherPack;
-
-class AnotherClass {
-  
-}
