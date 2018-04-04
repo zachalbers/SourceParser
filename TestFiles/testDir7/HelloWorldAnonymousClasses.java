@@ -1,6 +1,6 @@
 // package somepack;
 //
-// public class someClass {
+// class someClass {
 //
 //     interface someInterface {
 //         public void greet();
@@ -8,6 +8,7 @@
 //     }
 //
 //     public void sayHello() {
+//
 //
 //         class EnglishGreeting implements someInterface {
 //             String name = "world";
@@ -34,8 +35,5 @@
 //         };
 //
 //     }
-//
-// }
-//
 //
 // }

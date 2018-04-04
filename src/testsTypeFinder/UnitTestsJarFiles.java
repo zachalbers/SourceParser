@@ -16,7 +16,7 @@ public class UnitTestsJarFiles {
 	/**
 	 * The following tests are analogous to "UnitTestsSimpleNames" but for is testing jar files
 	 */
-	
+	 
 	/**
 	 * Test for correct declaration and reference count given the directory path is directly to a jar file for int
 	 */

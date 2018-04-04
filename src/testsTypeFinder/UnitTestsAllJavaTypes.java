@@ -14,7 +14,7 @@ public class UnitTestsAllJavaTypes {
 	// BASEDIR should be the directory to the 'SENG300-Iteration1' folder
 	private static String BASEDIR = System.getProperty("user.dir");
 	
-	
+	 
 	/**
 	 * Tests for the correct output when given files with multiple types, including Arrays
 	 * 
