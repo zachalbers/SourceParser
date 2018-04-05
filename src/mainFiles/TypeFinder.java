@@ -24,7 +24,8 @@ import org.eclipse.jdt.core.dom.*;
 
 public class TypeFinder {
 	
-	  boolean DEBUG = false;		// Prints out additional information for debugging purposes.
+	  boolean DEBUG = true;		// Prints out additional information for debugging purposes.
+
 
 
 	  boolean containsPackage = false;	// DO NOT CHANGE
@@ -222,6 +223,7 @@ public class TypeFinder {
 				
 					
 					name = imb.getReturnType().getQualifiedName();
+					System.out.println("return type" + name);
 					if (!name.equals("void") && imb.getReturnType().isClass()) {
 						if (name.equals("")) name = "Local Classes";
 						else if (imb.getReturnType().isNested()) name = "Nested Classes";
@@ -240,7 +242,7 @@ public class TypeFinder {
 						if (nodeBinding.getType().isClass()) {
 							name = nodeBinding.getType().getQualifiedName();
 							if (name.equals("")) name = "Local Classes";
-							else if (nodeBinding.getType().isClass()) name = "Nested Classes";
+							else if (nodeBinding.getType().isNested()) name = "Nested Classes";
 							else name = "Normal Classes";
 						
 							addToCount(name, 0, 1);
