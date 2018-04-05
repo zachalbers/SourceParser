@@ -10,14 +10,9 @@ public class SomeClass {
 
   }
 
-
   public SomeClass someMethod(SomeClass instance1, SomeClass instance2) {
     return 5;
   }
-
-
-
-
 
 
 }
