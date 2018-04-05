@@ -25,7 +25,6 @@ public class TypeFinder {
 	  boolean DEBUG = false;		// Prints out additional information for debugging purposes.
 
 
-
 	  boolean containsPackage = false;	// DO NOT CHANGE
 	  boolean findAllTypes = false;
 	  String javaType = "";
@@ -125,7 +124,7 @@ public class TypeFinder {
 
 					
 					ITypeBinding nodeBinding = node.resolveBinding();
-					
+					if (nodeBinding == null) return super.visit(node);
 					
 
 					if (nodeBinding.getTypeDeclaration() != null) {
@@ -153,7 +152,7 @@ public class TypeFinder {
 							addToCount(superClassName, 0, 1);
 							
 
-						if (DEBUG) System.out.println("This class extends " + node.getSuperclassType());
+						if (DEBUG) System.out.println("This class extends " + superClassName);
 					}
 	
 //					if (nodeBinding.getInterfaces() != null) {
@@ -170,9 +169,12 @@ public class TypeFinder {
 		
 				public boolean visit(VariableDeclarationFragment node) {
 					String name;
-					ITypeBinding nodeBinding = node.resolveBinding().getType();
+					IVariableBinding IVarNodeBinding = node.resolveBinding();
+					if (IVarNodeBinding == null) return super.visit(node);
 					
-					if (nodeBinding.isClass()) {
+					ITypeBinding nodeBinding = IVarNodeBinding.getType();
+					
+					if (nodeBinding != null && nodeBinding.isClass()) {
 						
 						name = nodeBinding.getQualifiedName();
 						if (name.equals("")) name = "Local Classes";
@@ -201,7 +203,8 @@ public class TypeFinder {
 
 					String name;
 					IMethodBinding imb = node.resolveBinding();
-
+					
+					if (imb != null) {
 					
 					if (node.isConstructor()) {
 							name = imb.getDeclaringClass().getQualifiedName();
@@ -225,10 +228,12 @@ public class TypeFinder {
 						addToCount(name, 0, 1);
 						if (DEBUG) System.out.println("Method Return Type Reference: " + name);
 					}
+					}
 				
 					for (Object o : node.parameters()) {
 						SingleVariableDeclaration svd = (SingleVariableDeclaration) o;
 						IVariableBinding nodeBinding = svd.resolveBinding();
+						if (nodeBinding == null) return super.visit(node);
 						
 						if (nodeBinding.getType().isClass()) {
 							name = nodeBinding.getType().getQualifiedName();
@@ -263,7 +268,9 @@ public class TypeFinder {
 					
 					ITypeBinding nodeBinding = node.getType().resolveBinding();
 					
-					if (nodeBinding.isClass()) {
+
+					
+					if (nodeBinding != null && nodeBinding.isClass()) {
 						
 						name = node.getType().resolveBinding().getQualifiedName();
 						if (name.equals("")) name = "Local Classes";
@@ -298,7 +305,7 @@ public class TypeFinder {
 					for (Type t : args) {
 						ITypeBinding nodeBinding = (ITypeBinding) t.resolveBinding();
 						
-						if (nodeBinding.isClass()) {
+						if (nodeBinding != null && nodeBinding.isClass()) {
 							name = nodeBinding.getQualifiedName();
 							if (name.equals("")) name = "Local Classes";
 							else if (nodeBinding.isNested()) name = "Nested Classes";
@@ -432,8 +439,10 @@ public class TypeFinder {
 					  
 					  parseJarFile(i.getAbsolutePath());
 				  }
-				  if (i.getName().endsWith(".java")) parse(readFile(currentFilePath));
 				  if (i.isDirectory()) parseDirectory(i.getAbsolutePath());
+				  if (i.isFile() && i.getName().endsWith(".java")) parse(readFile(currentFilePath));
+
+				 
 			  	}	
 		  	}
 	  	}
