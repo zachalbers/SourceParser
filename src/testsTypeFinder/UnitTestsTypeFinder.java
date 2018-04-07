@@ -30,7 +30,7 @@ public class UnitTestsTypeFinder {
 	  String[] args = {BASEDIR + "" + File.separator + "TestFiles" + File.separator + "testDir1"};
 	  
 	  List<String> correctOutput = new ArrayList<String>();
-	  correctOutput.add("Normal Classes. Declarations found: 1; references found: 4.");
+	  correctOutput.add("Normal Types. Declarations found: 1; references found: 4.");
 
 	  
 	  TypeFinder finder = new TypeFinder();
@@ -51,7 +51,7 @@ public class UnitTestsTypeFinder {
 	  String[] args = {BASEDIR + "" + File.separator + "TestFiles" + File.separator + "testDir2"};
 	  
 	  List<String> correctOutput = new ArrayList<String>();
-	  correctOutput.add("Normal Classes. Declarations found: 2; references found: 5.");
+	  correctOutput.add("Normal Types. Declarations found: 2; references found: 5.");
 
 	  
 	  TypeFinder finder = new TypeFinder();
