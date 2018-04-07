@@ -133,10 +133,9 @@ public class TypeFinder {
 					if (nodeBinding.getTypeDeclaration() != null) {
 						
 						if (nodeBinding.isClass()) {
-							
+						
 							name = nodeBinding.getTypeDeclaration().getQualifiedName();
-							boolean normal = true;
-							if (nodeBinding.isLocal()) name = "Local Classes";
+							if (name.equals("")) name = "Local Classes";
 							else if (nodeBinding.isNested()) name = "Nested Classes";
 							else name = "Normal Classes";
 						
@@ -181,7 +180,7 @@ public class TypeFinder {
 					if (nodeBinding != null && nodeBinding.isClass()) {
 						
 						name = nodeBinding.getQualifiedName();
-						if (nodeBinding.isLocal()) name = "Local Classes";
+						if (name.equals("")) name = "Local Classes";
 						else if (nodeBinding.isNested()) name = "Nested Classes";
 						else name = "Normal Classes";
 					

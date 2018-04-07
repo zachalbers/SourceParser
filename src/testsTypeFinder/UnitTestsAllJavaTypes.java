@@ -14,7 +14,83 @@ public class UnitTestsAllJavaTypes {
 	// BASEDIR should be the directory to the 'SENG300-Iteration1' folder
 	private static String BASEDIR = System.getProperty("user.dir");
 	
-	 
+	
+	/**
+	 * Tests for the correct output when given nested classes inside anonymous classes
+	 * 
+	 */
+	@Test
+	public void testNestedInAnonymousClass() {
+	  String[] args = {BASEDIR + "" + File.separator + "TestFiles" + File.separator + "testDir6"};
+	  
+	  List<String> correctOutput = new ArrayList<String>();
+	  correctOutput.add("Anonymous Classes. Declarations found: 2; references found: 0.");
+	  correctOutput.add("Nested Classes. Declarations found: 2; references found: 2.");
+	  correctOutput.add("Normal Classes. Declarations found: 1; references found: 4.");
+	  
+	  TypeFinder finder = new TypeFinder();
+	  finder.run(args);
+	  assertEquals(correctOutput,  finder.allOutputStrings);
+	  
+	}	
+	
+	/**
+	 * Tests for the correct output when given multiple nested class
+	 * 
+	 */
+	@Test
+	public void testNestedClass() {
+	  String[] args = {BASEDIR + "" + File.separator + "TestFiles" + File.separator + "testDir3"};
+	  
+	  List<String> correctOutput = new ArrayList<String>();
+	  correctOutput.add("Nested Classes. Declarations found: 3; references found: 3.");
+	  correctOutput.add("Normal Classes. Declarations found: 1; references found: 1.");
+	  
+	  TypeFinder finder = new TypeFinder();
+	  finder.run(args);
+	  assertEquals(correctOutput,  finder.allOutputStrings);
+	  
+	}	
+	
+	
+	/**
+	 * Tests for the correct output when given local classes
+	 * 
+	 */
+	@Test
+	public void testLocalClass() {
+		  String[] args = {BASEDIR + "" + File.separator + "TestFiles" + File.separator + "testDir4"};
+		  
+		  List<String> correctOutput = new ArrayList<String>();
+		  correctOutput.add("Local Classes. Declarations found: 1; references found: 2.");
+		  correctOutput.add("Normal Classes. Declarations found: 1; references found: 0.");
+		  
+		  TypeFinder finder = new TypeFinder();
+		  finder.run(args);
+		  assertEquals(correctOutput,  finder.allOutputStrings);
+		  
+		}	
+	
+	/**
+	 * Tests for the correct output when given Anonymous classes
+	 * 
+	 */
+	@Test
+	public void testAnonymousClass() {
+		  String[] args = {BASEDIR + "" + File.separator + "TestFiles" + File.separator + "testDir5"};
+		  
+		  List<String> correctOutput = new ArrayList<String>();
+		  correctOutput.add("Anonymous Classes. Declarations found: 2; references found: 0.");
+		  correctOutput.add("Normal Classes. Declarations found: 1; references found: 4.");
+		  
+		  TypeFinder finder = new TypeFinder();
+		  finder.run(args);
+		  assertEquals(correctOutput,  finder.allOutputStrings);
+		  
+		}	
+	
+	
+	
 	/**
 	 * Tests for the correct output when given files with multiple types, including Arrays
 	 * 
