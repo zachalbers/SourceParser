@@ -24,7 +24,7 @@ import org.eclipse.jdt.core.dom.*;
 
 public class TypeFinder {
 	
-	  boolean DEBUG = false;		// Prints out additional information for debugging purposes.
+	  boolean DEBUG = true;		// Prints out additional information for debugging purposes.
 
 
 
@@ -365,7 +365,7 @@ public class TypeFinder {
 					String name;
 					
 					name = "Anonymous Types";
-
+					addToCount(name, 1, 0);
 				    return true;
 				}
 
