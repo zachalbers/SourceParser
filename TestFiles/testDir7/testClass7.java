@@ -6,6 +6,7 @@ public class testClass7 {	//normal class dec
 			class bob{
 				
 			}
+			
 		}
 	}
 	

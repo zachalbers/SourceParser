@@ -16,6 +16,26 @@ public class UnitTestsAllJavaTypes {
 	
 	
 	/**
+	 * Tests for the correct output when given a local class inside an anonymous class
+	 * 
+	 */
+	@Test
+	public void testLocalInAnonymousClass() {
+	  String[] args = {BASEDIR + "" + File.separator + "TestFiles" + File.separator + "testDir8"};
+	  
+	  List<String> correctOutput = new ArrayList<String>();
+	  correctOutput.add("Anonymous Types. Declarations found: 1; references found: 0.");
+	  correctOutput.add("Local Types. Declarations found: 1; references found: 0.");
+	  correctOutput.add("Normal Types. Declarations found: 1; references found: 2.");
+	  
+	  TypeFinder finder = new TypeFinder();
+	  finder.run(args);
+	  assertEquals(correctOutput,  finder.allOutputStrings);
+	  
+	}	
+	
+	
+	/**
 	 * Tests for the correct output when given nested classes inside anonymous classes
 	 * 
 	 */

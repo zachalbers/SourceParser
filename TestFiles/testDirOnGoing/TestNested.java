@@ -1,19 +1,19 @@
-package somePackage;
 
 
-publc class SuperClass {
+
+class SuperClass {
 
 }
 
 
-public class Subclass extends SuperClass {
+class Subclass extends SuperClass {
 
 
   public class NestedClass {
     String x;
-    public void someMethod() {
+     void someMethod() {
       //NestedClass abc = new NestedClass();
-        public class LocalClass{
+        class LocalClass{
 
         }
     }
