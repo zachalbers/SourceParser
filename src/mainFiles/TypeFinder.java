@@ -24,7 +24,7 @@ import org.eclipse.jdt.core.dom.*;
 
 public class TypeFinder {
 	
-	  boolean DEBUG = false;		// Prints out additional information for debugging purposes.
+	  boolean DEBUG = true;		// Prints out additional information for debugging purposes.
 
 
 
@@ -136,9 +136,9 @@ public class TypeFinder {
 							
 							name = nodeBinding.getTypeDeclaration().getQualifiedName();
 							boolean normal = true;
-							if (nodeBinding.isLocal()) name = "Local Classes";
-							else if (nodeBinding.isNested()) name = "Nested Classes";
-							else name = "Normal Classes";
+							if (nodeBinding.isLocal()) name = "Local Types";
+							else if (nodeBinding.isNested()) name = "Nested Types";
+							else name = "Normal Types";
 						
 							addToCount(name, 1, 0);
 							if (DEBUG) System.out.println("Declaration: " +name);
@@ -150,9 +150,9 @@ public class TypeFinder {
 							ITypeBinding superNodeBinding = node.getSuperclassType().resolveBinding();
 
 							String superClassName = superNodeBinding.getQualifiedName();
-							if (superClassName.equals("")) superClassName = "Local Classes";
-							else if (superNodeBinding.isNested()) superClassName = "Nested Classes";
-							else superClassName = "Normal Classes";
+							if (superNodeBinding.isLocal()) superClassName = "Local Types";
+							else if (superNodeBinding.isNested()) superClassName = "Nested Types";
+							else superClassName = "Normal Types";
 							addToCount(superClassName, 0, 1);
 							
 
@@ -181,9 +181,9 @@ public class TypeFinder {
 					if (nodeBinding != null && nodeBinding.isClass()) {
 						
 						name = nodeBinding.getQualifiedName();
-						if (nodeBinding.isLocal()) name = "Local Classes";
-						else if (nodeBinding.isNested()) name = "Nested Classes";
-						else name = "Normal Classes";
+						if (nodeBinding.isLocal()) name = "Local Types";
+						else if (nodeBinding.isNested()) name = "Nested Types";
+						else name = "Normal Types";
 					
 						addToCount(name, 0, 1);
 						if (DEBUG) System.out.println("Declaration: " +name);
@@ -212,9 +212,9 @@ public class TypeFinder {
 					
 					if (node.isConstructor()) {
 							name = imb.getDeclaringClass().getQualifiedName();
-							if (name.equals("")) name = "Local Classes";
-							else if (imb.getDeclaringClass().isNested()) name = "Nested Classes";
-							else name = "Normal Classes";
+							if (imb.getDeclaringClass().isLocal()) name = "Local Types";
+							else if (imb.getDeclaringClass().isNested()) name = "Nested Types";
+							else name = "Normal Types";
 							
 							
 							addToCount(name, 0, 1);
@@ -226,9 +226,9 @@ public class TypeFinder {
 					name = imb.getReturnType().getQualifiedName();
 					//System.out.println("return type" + name);
 					if (!name.equals("void") && imb.getReturnType().isClass()) {
-						if (name.equals("")) name = "Local Classes";
-						else if (imb.getReturnType().isNested()) name = "Nested Classes";
-						else name = "Normal Classes";
+						if (imb.getReturnType().isLocal()) name = "Local Types";
+						else if (imb.getReturnType().isNested()) name = "Nested Types";
+						else name = "Normal Types";
 						
 						addToCount(name, 0, 1);
 						if (DEBUG) System.out.println("Method Return Type Reference: " + name);
@@ -242,9 +242,9 @@ public class TypeFinder {
 						
 						if (nodeBinding.getType().isClass()) {
 							name = nodeBinding.getType().getQualifiedName();
-							if (name.equals("")) name = "Local Classes";
-							else if (nodeBinding.getType().isNested()) name = "Nested Classes";
-							else name = "Normal Classes";
+							if (nodeBinding.getType().isLocal()) name = "Local Types";
+							else if (nodeBinding.getType().isNested()) name = "Nested Types";
+							else name = "Normal Types";
 						
 							addToCount(name, 0, 1);
 							if (DEBUG) System.out.println("Parameter Variable Reference: " + name);					
@@ -278,9 +278,9 @@ public class TypeFinder {
 					if (nodeBinding != null && nodeBinding.isClass()) {
 						
 						name = node.getType().resolveBinding().getQualifiedName();
-						if (name.equals("")) name = "Local Classes";
-						else if (nodeBinding.isNested()) name = "Nested Classes";
-						else name = "Normal Classes";
+						if (node.getType().resolveBinding().isLocal()) name = "Local Types";
+						else if (nodeBinding.isNested()) name = "Nested Types";
+						else name = "Normal Types";
 					
 						addToCount(name, 0, 1);
 						if (DEBUG) System.out.println("Declaration: " +name);
@@ -312,9 +312,9 @@ public class TypeFinder {
 						
 						if (nodeBinding != null && nodeBinding.isClass()) {
 							name = nodeBinding.getQualifiedName();
-							if (name.equals("")) name = "Local Classes";
-							else if (nodeBinding.isNested()) name = "Nested Classes";
-							else name = "Normal Classes";
+							if (nodeBinding.isLocal()) name = "Local Types";
+							else if (nodeBinding.isNested()) name = "Nested Types";
+							else name = "Normal Types";
 						
 							addToCount(name, 0, 1);
 							if (DEBUG) System.out.println("Reference: " +name);
@@ -364,9 +364,8 @@ public class TypeFinder {
 				public boolean visit(AnonymousClassDeclaration node) {		
 					String name;
 					
-					name = "Anonymous Classes";
-				    addToCount(name, 1, 0);
-
+					name = "Anonymous Types";
+					addToCount(name, 1, 0);
 				    return true;
 				}
 
