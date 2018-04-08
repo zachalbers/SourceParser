@@ -109,7 +109,25 @@ public class UnitTestsAllJavaTypes {
 		  
 		}	
 	
-	
+	/**
+	 * Tests for the correct output when given all inner types
+	 * 
+	 */
+	@Test
+	public void testAllInnerClasses() {
+		  String[] args = {BASEDIR + "" + File.separator + "TestFiles" + File.separator + "testDir12"};
+		  
+		  List<String> correctOutput = new ArrayList<String>();
+		  correctOutput.add("Anonymous Types. Declarations found: 1; references found: 0.");
+		  correctOutput.add("Local Types. Declarations found: 1; references found: 2.");
+		  correctOutput.add("Nested Types. Declarations found: 3; references found: 1.");
+		  correctOutput.add("Normal Types. Declarations found: 1; references found: 2.");
+		  
+		  TypeFinder finder = new TypeFinder();
+		  finder.run(args);
+		  assertEquals(correctOutput,  finder.allOutputStrings);
+		  
+	}	
 	
 //	/**
 //	 * Tests for the correct output when given files with multiple types, including Arrays
