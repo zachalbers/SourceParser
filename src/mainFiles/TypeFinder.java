@@ -220,11 +220,10 @@ public class TypeFinder {
 							addToCount(name, 0, 1);
 							if (DEBUG) System.out.println("Constructor Reference: " + name);
 					}
-					
-				
+									
 					
 					name = imb.getReturnType().getQualifiedName();
-					//System.out.println("return type" + name);
+
 					if (!name.equals("void") && imb.getReturnType().isClass()) {
 						if (imb.getReturnType().isLocal()) name = "Local Types";
 						else if (imb.getReturnType().isNested()) name = "Nested Types";
@@ -238,9 +237,8 @@ public class TypeFinder {
 					for (Object o : node.parameters()) {
 						SingleVariableDeclaration svd = (SingleVariableDeclaration) o;
 						IVariableBinding nodeBinding = svd.resolveBinding();
-						if (nodeBinding == null) return super.visit(node);
-						
-						if (nodeBinding.getType().isClass()) {
+						if (nodeBinding == null) continue;
+						else if (nodeBinding.getType().isClass()) {
 							name = nodeBinding.getType().getQualifiedName();
 							if (nodeBinding.getType().isLocal()) name = "Local Types";
 							else if (nodeBinding.getType().isNested()) name = "Nested Types";
@@ -250,16 +248,7 @@ public class TypeFinder {
 							if (DEBUG) System.out.println("Parameter Variable Reference: " + name);					
 						}
 					}
-					
 
-//					List exceptions = node.thrownExceptions();
-//					
-//					for (Object e : exceptions) {
-//						String exceptionName;
-//						SimpleName svd = (SimpleName) e;				
-//						exceptionName = svd.resolveTypeBinding().getQualifiedName();	
-//						addToCount(exceptionName, 0, 1);			
-//						if (DEBUG) System.out.println("Exeption Reference Reference: " + name);
 //					}
 					return super.visit(node);
 				}
@@ -272,9 +261,7 @@ public class TypeFinder {
 
 					
 					ITypeBinding nodeBinding = node.getType().resolveBinding();
-					
-
-					
+									
 					if (nodeBinding != null && nodeBinding.isClass()) {
 						
 						name = node.getType().resolveBinding().getQualifiedName();
@@ -285,22 +272,14 @@ public class TypeFinder {
 						addToCount(name, 0, 1);
 						if (DEBUG) System.out.println("Declaration: " +name);
 					}
-
-
-					
-					return true; // do not continue 
+				
+					return true;
 			}
 
 				
 				public boolean visit(AnnotationTypeDeclaration node) {
-//					String name;
-//					
-//					name = node.resolveBinding().getQualifiedName();		
-//	
-//					addToCount(name, 1, 0);	
-//					if (DEBUG) System.out.println("Declaration: " + name);
-					
-					return false; // do not continue 
+		
+					return false;
 				}
 				
 				public boolean visit(ParameterizedType node) {
@@ -324,42 +303,9 @@ public class TypeFinder {
 				}
 				
 				public boolean visit(EnumDeclaration node) {
-//					String name;
-//
-//					name = node.resolveBinding().getQualifiedName();		
-//	
-//					addToCount(name, 1, 0);
-//					if (DEBUG) System.out.println("Declaration: " + name);
-//
-//					
-//					ITypeBinding nodeBinding = node.resolveBinding();
-//					if (nodeBinding.getInterfaces() != null) {
-//						ITypeBinding[] interfaces = nodeBinding.getInterfaces();
-//						for (ITypeBinding i : interfaces) {
-//						addToCount(i.getQualifiedName(), 0, 1);
-//
-//						if (DEBUG) System.out.println("Implements Reference: " + i.getQualifiedName());
-//						}
-//
-//					}
-
-					return false; // do not continue 
+					return false;
 				}
 				
-				
-//				public boolean visit(CatchClause node) {
-//					String name;
-//					ITypeBinding nodeBinding = node.getException().getType().resolveBinding();
-//					
-//					if (nodeBinding != null) {
-//						
-//						name = nodeBinding.getQualifiedName();
-//						addToCount(name, 0, 1);
-//
-//						if (DEBUG) System.out.println("Reference: "+ name);
-//					}
-//					return false;
-//				}
 				
 				public boolean visit(AnonymousClassDeclaration node) {		
 					String name;
